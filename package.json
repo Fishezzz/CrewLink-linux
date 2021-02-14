@@ -27,10 +27,8 @@
         "lint": "eslint src",
         "dev": "electron-webpack dev",
         "compile": "electron-webpack",
-        "dist": "yarn compile && electron-builder --win --x64 --ia32",
-        "dist:32": "yarn compile && electron-builder --win --ia32",
-        "dist:64": "yarn compile && electron-builder --win --x64",
-        "publish": "yarn compile && electron-builder --win --x64 --ia32 --publish always"
+        "dist": "yarn compile && electron-builder --linux --x64",
+        "publish": "yarn compile && electron-builder --linux --x64 --publish always"
     },
     "iohook": {
         "targets": [
@@ -57,12 +55,11 @@
         "electron-store": "^6.0.1",
         "electron-updater": "^4.3.5",
         "electron-window-state": "^5.0.3",
-        "iohook": "^0.7.1",
-        "memoryjs": "git://github.com/Rob--/memoryjs",
+        "iohook": "git://github.com/zbanks/iohook.git#0.7.2_zbanks",
+        "memoryjs": "https://github.com/TheGreatMcPain/memoryjs.git",
         "pretty-bytes": "^5.5.0",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
-        "registry-js": "^1.12.0",
         "simple-peer": "^9.8.0",
         "socket.io-client": "^2.3.1",
         "source-map-support": "^0.5.16",

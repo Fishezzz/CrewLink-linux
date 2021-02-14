@@ -9,6 +9,10 @@ files:
     filter:
       - package.json
       - app
-win:
+linux:
   publish:
     - github
+  target:
+    - AppImage
+    - deb
+    - tar.gz
