@@ -16,6 +16,16 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow: BrowserWindow | null = null;
 let overlayWindow: BrowserWindow | null = null;
+let disableOverlay = false;
+let setTimeoutValue = 0;
+
+if (app.commandLine.hasSwitch('disable-overlay')) {
+	disableOverlay = true;
+} else {
+	if (process.platform === 'linux') {
+		setTimeoutValue = 1000;
+	}
+}
 
 app.commandLine.appendSwitch('disable-pinch');
 
@@ -124,7 +134,9 @@ function createOverlay() {
 		);
 	}
 	window.setIgnoreMouseEvents(true);
-	electronOverlayWindow.attachTo(window, 'Among Us');
+	if (!disableOverlay) {
+		electronOverlayWindow.attachTo(window, 'Among Us');
+	}
 
 	if (isDevelopment) {
 		// Force devtools into detached mode otherwise they are unusable
@@ -224,11 +236,15 @@ if (!gotTheLock) {
 		}
 	});
 
+	app.disableHardwareAcceleration();
+
 	// create main BrowserWindow when electron is ready
 	app.whenReady().then(() => {
-		mainWindow = createMainWindow();
-		overlayWindow = createOverlay();
-		initializeIpcListeners(overlayWindow);
-		initializeIpcHandlers();
+		setTimeout(function () {
+			mainWindow = createMainWindow();
+			overlayWindow = createOverlay();
+			initializeIpcListeners(overlayWindow);
+			initializeIpcHandlers();
+		}, setTimeoutValue);
 	});
 }
