@@ -1,7 +1,8 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import { HKEY, enumerateValues } from 'registry-js';
 import spawn from 'cross-spawn';
 import path from 'path';
+import fs from 'fs';
+import { homedir } from 'os';
 
 import { IpcMessages, IpcOverlayMessages } from '../common/ipc-messages';
 
@@ -22,27 +23,28 @@ export const initializeIpcListeners = (overlayWindow: BrowserWindow): void => {
 	);
 
 	ipcMain.on(IpcMessages.OPEN_AMONG_US_GAME, () => {
-		// Get steam path from registry
-		const steamPath = enumerateValues(
-			HKEY.HKEY_LOCAL_MACHINE,
-			'SOFTWARE\\WOW6432Node\\Valve\\Steam'
-		).find((v) => v.name === 'InstallPath');
+		const steamPath = path.join(homedir(), '.steam/steam');
 		// Check if Steam is installed
-		if (!steamPath) {
-			dialog.showErrorBox('Error', 'Could not find your Steam install path.');
-		} else {
-			try {
-				const process = spawn(
-					path.join(steamPath.data as string, 'steam.exe'),
-					['-applaunch', '945360']
-				);
-				process.on('error', () => {
+		fs.exists(steamPath, (exists) => {
+			if (!exists) {
+				dialog.showErrorBox('Error', 'Could not find your Steam install path.');
+			} else {
+				try {
+					const process = spawn(path.join(steamPath, 'steam.sh'), [
+						'-applaunch',
+						'945360',
+					]);
+					process.on('error', () => {
+						dialog.showErrorBox(
+							'Error',
+							'Please launch the game through Steam.'
+						);
+					});
+				} catch (e) {
 					dialog.showErrorBox('Error', 'Please launch the game through Steam.');
-				});
-			} catch (e) {
-				dialog.showErrorBox('Error', 'Please launch the game through Steam.');
+				}
 			}
-		}
+		});
 	});
 
 	ipcMain.on(IpcMessages.RESTART_CREWLINK, () => {
