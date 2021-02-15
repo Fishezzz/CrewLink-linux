@@ -1,6 +1,16 @@
 # CrewLink-linux
 
-- Uses [TheGreatMcPain's fork of `memoryjs`](https://github.com/TheGreatMcPain/memoryjs) which implements _just enough_ of the API for CrewLink. 
+- Uses [TheGreatMcPain's fork of `memoryjs`](https://github.com/TheGreatMcPain/memoryjs) which implements _just enough_ of the API for CrewLink.
+- Will launch Among Us
+
+## Running
+```sh
+wget "https://github.com/zbanks/CrewLink/releases/download/v1.2.1/CrewLink-1.2.1.AppImage"
+chmod +x CrewLink-1.2.1.AppImage
+
+echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+./CrewLink-1.2.1.AppImage
+```
 
 ----
 
