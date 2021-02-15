@@ -5,7 +5,7 @@
 
 ## Running
 ```sh
-wget "https://github.com/zbanks/CrewLink/releases/download/v1.2.1/CrewLink-1.2.1.AppImage"
+wget "https://github.com/Fishezzz/CrewLink/releases/download/v1.2.1/CrewLink-1.2.1.AppImage"
 chmod +x CrewLink-1.2.1.AppImage
 
 echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
